@@ -64,7 +64,6 @@ router.put('/:id', async (req, res) => {
     const id = req.params.id;
 
     // update any field of the book that has changed
-    // creates a new entry if the book does not exist
     const updatedBook = await Book.findByIdAndUpdate(
       id,
       {
@@ -82,6 +81,10 @@ router.put('/:id', async (req, res) => {
       { new: true }
     );
 
+    if (!updatedBook) {
+      throw Error(`Book with id ${id} not found`);
+    }
+
     res.json({ success: true, data: updatedBook });
   } catch (error) {
     console.log(error);
@@ -90,12 +93,20 @@ router.put('/:id', async (req, res) => {
 });
 
 // Handle DELETE request to /api/books/{id}
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    res.json({ success: true, data: 'Sucessful DELETE request' });
+    const id = req.params.id;
+
+    const book = await Book.findByIdAndDelete(id);
+
+    if (!book) {
+      throw Error(`Book with id ${id} not found`);
+    }
+
+    res.json({ success: true, data: {} });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, error: `${error}` });
+    res.status(404).json({ success: false, error: `${error}` });
   }
 });
 
