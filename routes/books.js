@@ -25,7 +25,7 @@ router.get('/:id', (req, res) => {
 // Handle POST request to /api/books
 router.post('/', (req, res) => {
   try {
-    res.json({ success: true, data: 'Sucessful GET request' });
+    res.json({ success: true, data: 'Sucessful POST request' });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error: `${error}` });
@@ -35,7 +35,7 @@ router.post('/', (req, res) => {
 // Handle PUT request to /api/books/{id}
 router.put('/:id', (req, res) => {
   try {
-    res.json({ success: true, data: 'Sucessful GET request' });
+    res.json({ success: true, data: 'Sucessful PUT request' });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error: `${error}` });
@@ -45,10 +45,11 @@ router.put('/:id', (req, res) => {
 // Handle DELETE request to /api/books/{id}
 router.delete('/:id', (req, res) => {
   try {
-    res.json({ success: true, data: 'Sucessful GET request' });
+    res.json({ success: true, data: 'Sucessful DELETE request' });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error: `${error}` });
   }
 });
+
 module.exports = router;
