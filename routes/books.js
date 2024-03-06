@@ -12,17 +12,25 @@ router.get('/', async (req, res) => {
     res.json({ success: true, data: books });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, error: `${error}` });
+    res.status(500).json({ success: false, error: 'Something went wrong' });
   }
 });
 
 // Handle GET request to /api/books/{id}
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    res.json({ success: true, data: 'Sucessful GET request' });
+    const id = req.params.id;
+    const book = await Book.findById(id);
+
+    // throw an error if book is not found
+    if (!book) {
+      throw Error(`Book with id ${id} not found`);
+    }
+
+    res.json({ success: true, data: book });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, error: `${error}` });
+    res.status(404).json({ success: false, error: `${error}` });
   }
 });
 
