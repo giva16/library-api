@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { boolean } = require('webidl-conversions');
 
 const Book = mongoose.Schema({
   title: {
@@ -26,11 +25,11 @@ const Book = mongoose.Schema({
     type: String,
   },
   read: {
-    type: boolean,
+    type: Boolean,
     default: false,
   },
   favorite: {
-    type: boolean,
+    type: Boolean,
     default: false,
   },
   dateAdded: {
