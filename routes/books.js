@@ -26,7 +26,6 @@ router.get('/:id', async (req, res) => {
     if (!book) {
       throw Error(`Book with id ${id} not found`);
     }
-
     res.json({ success: true, data: book });
   } catch (error) {
     console.log(error);
@@ -60,9 +59,30 @@ router.post('/', async (req, res) => {
 });
 
 // Handle PUT request to /api/books/{id}
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
-    res.json({ success: true, data: 'Sucessful PUT request' });
+    const id = req.params.id;
+
+    // update any field of the book that has changed
+    // creates a new entry if the book does not exist
+    const updatedBook = await Book.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          title: req.body.title,
+          authors: req.body.authors,
+          pages: req.body.pages,
+          publishedYear: req.body.publishedYear,
+          genre: req.body.genre,
+          imageURL: req.body.imageURL,
+          read: req.body.read,
+          favorite: req.body.favorite,
+        },
+      },
+      { new: true }
+    );
+
+    res.json({ success: true, data: updatedBook });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error: `${error}` });
