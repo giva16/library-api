@@ -1,5 +1,6 @@
 // import modules
 const express = require('express');
+const dbConnect = require('./config/db');
 require('dotenv').config();
 
 // get port number from .env file with dotenv
@@ -13,6 +14,8 @@ app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: false }));
 
+// Connect to our database
+dbConnect();
 app.listen(PORT, (req, res) => {
   console.log(`listening on port ${PORT}`);
 });
