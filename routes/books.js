@@ -3,25 +3,13 @@ const mongoose = require('mongoose');
 const router = express.Router();
 
 // book schema from mongoose with methods to mutate mongoDB collection documents
-const bookSchema = require('../models/Book');
+const Book = require('../models/Book');
 
-const Book = mongoose.model('Book', bookSchema);
-
-// example book document
-async function createExampleBook() {
-  const book1 = new Book({
-    title: 'Harry Potter and The Order of Pheonix',
-    authors: ['J.K. Rowling'],
-    pages: 300,
-    publishedYear: 2001,
-  });
-
-  await book1.save();
-}
 // Handle GET request to /api/books
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    res.json({ success: true, data: 'Sucessful GET request' });
+    const books = await Book.find();
+    res.json({ success: true, data: books });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error: `${error}` });
@@ -39,9 +27,24 @@ router.get('/:id', (req, res) => {
 });
 
 // Handle POST request to /api/books
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+  // create a new book document, with each field filled by body of request
+  const book = new Book({
+    title: req.body.title,
+    authors: req.body.authors,
+    pages: req.body.pages,
+    publishedYear: req.body.publishedYear,
+    genre: req.body.genre,
+    imageURL: req.body.imageURL,
+    blurb: req.body.blurb,
+    read: req.body.read,
+    favorite: req.body.favorite,
+  });
+
   try {
-    res.json({ success: true, data: 'Sucessful POST request' });
+    //insert book into database
+    const savedBook = await book.save();
+    res.json({ success: true, data: savedBook });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error: `${error}` });
