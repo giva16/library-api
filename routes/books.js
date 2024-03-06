@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const router = express.Router();
 
 // book schema from mongoose with methods to mutate mongoDB collection documents
